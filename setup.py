@@ -12,7 +12,7 @@ for any questions or suggestions please email Connor Tannahill at
 ctannahill3@gmail.com
 """
 
-version             = '1.0.3'
+version             = '1.0.4'
 distname            = 'bacoli_py'
 description         = 'Python package for the error controlled numerical solution to 1D time-dependent PDEs'
 long_description    = descr
@@ -29,9 +29,9 @@ classifiers=['Development Status :: 5 - Production/Stable',
              'Operating System :: OS Independent']
 
 def configuration(parent_package='', top_path=None):
-    config = Configuration(distname, parent_package, top_path, 
+    config = Configuration(distname, parent_package, top_path,
                            packages=['bacoli_py'],
-                           version = version,
+                           # version = version,
                            author = author,
                            author_email = author_email,
                            description = description,
