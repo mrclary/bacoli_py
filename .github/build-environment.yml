@@ -2,6 +2,6 @@ name: build
 channels:
   - conda-forge
 dependencies:
-  - numpy
+  - numpy >=1.23
   - setuptools <60.0
   - wheel
