@@ -38,10 +38,19 @@ jobs:
             python=${{ matrix.python_version }}
             sel(osx): delocate
             sel(win): delvewheel
+            sel(linux): auditwheel
 
-      - name: Link gfortran
-        if: runner.os == 'macOS'
-        run: ln -s /usr/local/bin/gfortran-11 /usr/local/bin/gfortran
+      - name: Update Environment
+        run: |
+          if [[ $RUNNER_OS = 'macOS' ]]; then
+              echo 'Linking gfortran...'
+              ln -s /usr/local/bin/gfortran-11 /usr/local/bin/gfortran
+          fi
+          if [[ $RUNNER_OS = 'Linux' ]]; then
+              echo 'Upgrading patchelf...'
+              sudo apt update
+              sudo apt upgrade patchelf
+          fi
 
       - name: Show Environment
         run: |
@@ -56,20 +65,28 @@ jobs:
           echo "WHEEL=$WHEEL" >> $GITHUB_ENV
           echo "NAME=$(basename $WHEEL)" >> $GITHUB_ENV
 
-      - name: Delocate macOS Wheel
-        if: runner.os == 'macOS'
+      - name: Delocate Wheel
         run: |
-          delocate-listdeps --all $WHEEL
-          delocate-wheel -v $WHEEL
-          delocate-listdeps --all $WHEEL
-
-      - name: Delocate Windows Wheel
-        if: runner.os == 'Windows'
-        run: |
-          opts=("--add-path" "build/lib.win*/bacoli_interface/.libs")
-          delvewheel show ${opts[@]} $WHEEL
-          delvewheel repair -v ${opts[@]} -w $DISTDIR $WHEEL
-          delvewheel show ${opts[@]} $WHEEL
+          zipinfo $WHEEL
+          echo ''
+          if [[ $RUNNER_OS = 'macOS' ]]; then
+              delocate-listdeps --all $WHEEL
+              delocate-wheel -v $WHEEL
+              delocate-listdeps --all $WHEEL
+          fi
+          if [[ $RUNNER_OS = 'Windows' ]]; then
+              opts=("--add-path" "build/lib.win*/bacoli_interface/.libs")
+              delvewheel show ${opts[@]} $WHEEL
+              delvewheel repair -v ${opts[@]} -w $DISTDIR $WHEEL
+              delvewheel show ${opts[@]} $WHEEL
+          fi
+          if [[ $RUNNER_OS = 'Linux' ]]; then
+              auditwheel show $WHEEL
+              auditwheel repair -w $DISTDIR --plat linux_x86_64 $WHEEL
+              auditwheel show $WHEEL
+          fi
+          echo ''
+          zipinfo $WHEEL
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
