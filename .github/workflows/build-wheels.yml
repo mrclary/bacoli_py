@@ -7,6 +7,9 @@ on:
   pull_request:
     branches:
     - master
+  release:
+    types:
+      - created
   workflow_dispatch:
 
 jobs:
@@ -16,6 +19,7 @@ jobs:
     env:
       PYTHON_VERSION: ${{ matrix.python_version }}
       DISTDIR: ${{ github.workspace }}/dist
+      GITHUB_TOKEN: ${{ github.token }}
     strategy:
       fail-fast: false
       matrix:
@@ -88,3 +92,17 @@ jobs:
         with:
           path: ${{ env.WHEEL }}
           name: ${{ env.NAME }}
+
+      - name: Get Release
+        if: github.event_name == 'release'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.0
+
+      - name: Upload Release Asset
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ${{ env.WHEEL }}
+          asset_name: ${{ env.NAME }}
+          asset_content_type: application/zip
