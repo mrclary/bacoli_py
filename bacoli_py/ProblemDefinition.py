@@ -6,7 +6,7 @@ class ProblemDefinition:
     """Defines a system of 1D parabolic PDEs"""
 
 
-    def __init__(self, npde, f, bndxa, bndxb, uinit, derivf=None, 
+    def __init__(self, npde, f, bndxa, bndxb, uinit, derivf=None,
                  difbxa=None, difbxb=None):
         """
         Parameters
@@ -15,17 +15,17 @@ class ProblemDefinition:
             The number of PDE's in this system.
         f : callback function
             System of PDE's to be solved.
-        bndxa : callback function 
+        bndxa : callback function
             Left boundary conditions for the system of PDEs.
-        bndxb : callback function 
+        bndxb : callback function
             Right boundary conditions for the system of PDEs.
         uinit : callback function
             Initial conditions for the set of PDEs.
-        derivf : callback function 
+        derivf : callback function
             Partial derivatives of the PDE system.
-        difbxa : callback function 
+        difbxa : callback function
             Partial derivatives of the left boundary conditions.
-        difbxb : callback function 
+        difbxb : callback function
             Partial derivatives of the right boundary conditions.
 
         Raises
@@ -41,13 +41,13 @@ class ProblemDefinition:
         except ValueError:
             raise ValueError('npde must be an integer value.')
 
-        self.f = f 
+        self.f = f
 
         self.bndxa = bndxa
 
-        self.bndxb = bndxb 
+        self.bndxb = bndxb
 
-        self.uinit = uinit 
+        self.uinit = uinit
 
         if (difbxa == None and difbxb != None) \
                 or (difbxa != None and difbxb == None):
@@ -84,4 +84,3 @@ def dummy_derivf(t, x, u, ux, uxx, dfdu, dfdux, dfduxx):
 
 def dummy_difbx(t, u, ux, dbdu, dbdux, dbdt):
     pass
-

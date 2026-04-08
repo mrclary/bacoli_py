@@ -1,7 +1,7 @@
 # Solving PDE u_t = u_xx + pi**2 * sin(pi*x) (npde=1), u(0,t)=1,
 # u(1,t)=1, u(x,0) = 1.
 # --------------------------------------------------------------------
-# Here we specify Jacobian matrices for the PDE system, and the 
+# Here we specify Jacobian matrices for the PDE system, and the
 # boundary conditions. We do this by defining and providing
 # the callback functions derivf, bndxa, bndxb. Doing so is known
 # to increase the speed of computation drastically, as these matrices
@@ -11,7 +11,7 @@
 # numerical solutions from bacoli_py to an output file and later
 # use this information to generate a 3D plot.
 # --------------------------------------------------------------------
-# This example is based off a FORTRAN analogue for the original 
+# This example is based off a FORTRAN analogue for the original
 # BACOLI. The original can be found at:
 #   http://cs.stmarys.ca/~muir/BACOLI95-3_Source/3-Problems/sincmads.f
 # --------------------------------------------------------------------
@@ -78,8 +78,8 @@ def uinit(x, u):
 
 # Define the ProblemDefinition object, prodividing the optional
 # arguments derivf, difbxa, and difbxb along with the usual parameters.
-problem_definition = bacoli_py.ProblemDefinition(npde, f=f, 
-                                            bndxa=bndxa, 
+problem_definition = bacoli_py.ProblemDefinition(npde, f=f,
+                                            bndxa=bndxa,
                                             bndxb=bndxb,
                                             uinit=uinit,
                                             derivf=derivf,
@@ -94,7 +94,7 @@ atol = 1.0e-6
 rtol = atol
 
 # Solve this system, passing the optional parameter tstop, the absolute
-# end of the temporal domain which can be helpful when performing 
+# end of the temporal domain which can be helpful when performing
 # time-integration.
 evaluation = solver.solve(problem_definition, initial_time, initial_mesh,
                               tspan, xspan, atol, rtol, tstop=1.0)

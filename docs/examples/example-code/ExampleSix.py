@@ -1,6 +1,6 @@
 # Two Layer Burgers Equation
 # ------------------------------------------------------------------
-# This example is based off a FORTRAN analogue for the original 
+# This example is based off a FORTRAN analogue for the original
 # BACOLI. The original can be found at:
 #   http://cs.stmarys.ca/~muir/BACOLI95-3_Source/3-Problems/burg1.f
 # ------------------------------------------------------------------
@@ -89,10 +89,10 @@ def uinit(x, u):
 
     return u
 
-# Pack all of these callbacks and the number of PDE's into a 
+# Pack all of these callbacks and the number of PDE's into a
 # ProblemDefinition object.
-problem_definition = bacoli_py.ProblemDefinition(npde, f=f, 
-                                            bndxa=bndxa, 
+problem_definition = bacoli_py.ProblemDefinition(npde, f=f,
+                                            bndxa=bndxa,
                                             bndxb=bndxb,
                                             uinit=uinit)
 
@@ -139,4 +139,3 @@ ax.set_ylabel('$t$')
 ax.set_zlabel('$u(t,x)$')
 
 plt.savefig('trimesh.png')
-
