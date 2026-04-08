@@ -48,7 +48,7 @@ jobs:
         run: |
           if [[ $RUNNER_OS = 'macOS' ]]; then
               echo 'Linking gfortran...'
-              ln -s /usr/local/bin/gfortran-11 /usr/local/bin/gfortran
+              ln -s /usr/local/bin/gfortran-15 /usr/local/bin/gfortran
           fi
 
       - name: Show Environment
