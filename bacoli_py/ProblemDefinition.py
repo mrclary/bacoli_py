@@ -1,6 +1,4 @@
-import numpy as np
 from numpy import array
-import inspect
 
 class ProblemDefinition:
     """Defines a system of 1D parabolic PDEs"""
@@ -37,7 +35,7 @@ class ProblemDefinition:
         """
 
         try:
-            self.npde = array(npde, dtype=np.int)
+            self.npde = array(npde, dtype=int)
         except ValueError:
             raise ValueError('npde must be an integer value.')
 

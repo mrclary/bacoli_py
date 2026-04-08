@@ -67,7 +67,7 @@ setup(
     # packages=setuptools.find_packages(),
     include_package_data = True,
     long_description=open('README.txt').read(),
-    install_requires=['numpy>=1.23'],
+    install_requires=['numpy>=1.23,<2'],
     classifiers=classifiers,
     platforms=['any'],
     ext_modules=[bacoli_interface]
