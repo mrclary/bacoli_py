@@ -59,7 +59,7 @@ jobs:
 
       - name: Build Wheel
         run: |
-          python -m pip wheel -v -w $DISTDIR .
+          python -m pip wheel --no-build-isolation -v -w $DISTDIR .
           WHEEL=$(find $DISTDIR -name bacoli*.whl)
           echo "WHEEL=$WHEEL" >> $GITHUB_ENV
           echo "NAME=$(basename $WHEEL)" >> $GITHUB_ENV
