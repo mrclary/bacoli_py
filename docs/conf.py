@@ -166,6 +166,3 @@ texinfo_documents = [
      author, 'bacoli_py', '1D partial differential equation solver with spatial and temporal error control.',
      'Miscellaneous'),
 ]
-
-
-

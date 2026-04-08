@@ -1,10 +1,10 @@
 # Solving Two Layer Burgers Equations.
 # PDE: u_t = eps*u_xx - u*ux, with initial and boundary conditions
 # defined from the exact solution.
-# 
+#
 # This example uses compiled callback functions to increase speed.
 # ------------------------------------------------------------------
-# This example is based off a FORTRAN analogue for the original 
+# This example is based off a FORTRAN analogue for the original
 # BACOLI. The original can be found at:
 #   http://cs.stmarys.ca/~muir/BACOLI95-3_Source/3-Problems/burg2.f
 # ------------------------------------------------------------------
@@ -25,89 +25,89 @@ import numpy.f2py as f2py
 import sys
 
 prob_def_f = """
-      subroutine f(t, x, u, ux, uxx, fval)
-          integer          npde
-          parameter       (npde=1)
-          double precision t, x, u(npde), ux(npde)
-          double precision uxx(npde), fval(npde)
+     subroutine f(t, x, u, ux, uxx, fval)
+         integer          npde
+         parameter       (npde=1)
+         double precision t, x, u(npde), ux(npde)
+         double precision uxx(npde), fval(npde)
 
-          double precision eps
-          parameter       (eps=1d-4)
+         double precision eps
+         parameter       (eps=1d-4)
 
-          fval(1) = eps*uxx(1) - u(1)*ux(1)
-      return
-      end
+         fval(1) = eps*uxx(1) - u(1)*ux(1)
+     return
+     end
 
-      subroutine bndxa(t, u, ux, bval)
-          integer          npde
-          parameter        (npde=1)
-          double precision t, u(npde), ux(npde), bval(npde)
-          double precision eps
-          parameter       (eps=1d-4)
-          double precision a1, a2, a3, expa1, expa2, expa3, temp
+     subroutine bndxa(t, u, ux, bval)
+         integer          npde
+         parameter        (npde=1)
+         double precision t, u(npde), ux(npde), bval(npde)
+         double precision eps
+         parameter       (eps=1d-4)
+         double precision a1, a2, a3, expa1, expa2, expa3, temp
 
-          a1 = (0.5d0 - 4.95d0 * t) * 0.5d-1 / eps
-          a2 = (0.5d0 - 0.75d0 * t) * 0.25d0 / eps
-          a3 = 0.1875d0 / eps
-          expa1 = 0.d0
-          expa2 = 0.d0
-          expa3 = 0.d0
-          temp = max(a1, a2, a3)
-          if ((a1-temp) .ge. -35.d0) expa1 = exp(a1-temp)
-          if ((a2-temp) .ge. -35.d0) expa2 = exp(a2-temp)
-          if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
+         a1 = (0.5d0 - 4.95d0 * t) * 0.5d-1 / eps
+         a2 = (0.5d0 - 0.75d0 * t) * 0.25d0 / eps
+         a3 = 0.1875d0 / eps
+         expa1 = 0.d0
+         expa2 = 0.d0
+         expa3 = 0.d0
+         temp = max(a1, a2, a3)
+         if ((a1-temp) .ge. -35.d0) expa1 = exp(a1-temp)
+         if ((a2-temp) .ge. -35.d0) expa2 = exp(a2-temp)
+         if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
 
-          bval(1) = u(1) - (0.1d0*expa1+0.5d0*expa2+expa3)
-     &                / (expa1+expa2+expa3)
-      return
-      end
+         bval(1) = u(1) - (0.1d0*expa1+0.5d0*expa2+expa3)
+    &                / (expa1+expa2+expa3)
+     return
+     end
 
-      subroutine bndxb(t, u, ux, bval)
-          integer          npde
-          parameter       (npde=1)
-          double precision t, u(npde), ux(npde), bval(npde)
-          double precision eps
-          parameter       (eps=1d-4)
-          double precision a1, a2, a3, expa1, expa2, expa3, temp
+     subroutine bndxb(t, u, ux, bval)
+         integer          npde
+         parameter       (npde=1)
+         double precision t, u(npde), ux(npde), bval(npde)
+         double precision eps
+         parameter       (eps=1d-4)
+         double precision a1, a2, a3, expa1, expa2, expa3, temp
 
-          a1 = (-0.5d0 - 4.95d0 * t) * 0.5d-1 / eps
-          a2 = (-0.5d0 - 0.75d0 * t) * 0.25d0 / eps
-          a3 = - 0.3125d0 / eps
-          expa1 = 0.d0
-          expa2 = 0.d0
-          expa3 = 0.d0
-          temp = max(a1, a2, a3)
-          if ((a1-temp) .ge. -35.d0) expa1 = exp(a1-temp)
-          if ((a2-temp) .ge. -35.d0) expa2 = exp(a2-temp)
-          if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
+         a1 = (-0.5d0 - 4.95d0 * t) * 0.5d-1 / eps
+         a2 = (-0.5d0 - 0.75d0 * t) * 0.25d0 / eps
+         a3 = - 0.3125d0 / eps
+         expa1 = 0.d0
+         expa2 = 0.d0
+         expa3 = 0.d0
+         temp = max(a1, a2, a3)
+         if ((a1-temp) .ge. -35.d0) expa1 = exp(a1-temp)
+         if ((a2-temp) .ge. -35.d0) expa2 = exp(a2-temp)
+         if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
 
-          bval(1) = u(1) - (0.1d0*expa1+0.5d0*expa2+expa3)
-     &                / (expa1+expa2+expa3)
-      return
-      end
+         bval(1) = u(1) - (0.1d0*expa1+0.5d0*expa2+expa3)
+    &                / (expa1+expa2+expa3)
+     return
+     end
 
-      subroutine uinit(x, u)
-          integer          npde
-          parameter        (npde=1)
-          double precision x, u(npde)
-          double precision eps
-          parameter       (eps=1d-4)
-          double precision a1, a2, a3, expa1, expa2, expa3, temp
+     subroutine uinit(x, u)
+         integer          npde
+         parameter        (npde=1)
+         double precision x, u(npde)
+         double precision eps
+         parameter       (eps=1d-4)
+         double precision a1, a2, a3, expa1, expa2, expa3, temp
 
-          a1 = (-x + 0.5d0) * 0.5d-1 / eps
-          a2 = (-x + 0.5d0) * 0.25d0 / eps
-          a3 = (-x + 0.375d0) * 0.5 / eps
-          expa1 = 0.d0
-          expa2 = 0.d0
-          expa3 = 0.d0
-          temp = max(a1, a2, a3)
-          if ((a1-temp) .ge. -35.d0) expa1 = exp(a1-temp)
-          if ((a2-temp) .ge. -35.d0) expa2 = exp(a2-temp)
-          if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
+         a1 = (-x + 0.5d0) * 0.5d-1 / eps
+         a2 = (-x + 0.5d0) * 0.25d0 / eps
+         a3 = (-x + 0.375d0) * 0.5 / eps
+         expa1 = 0.d0
+         expa2 = 0.d0
+         expa3 = 0.d0
+         temp = max(a1, a2, a3)
+         if ((a1-temp) .ge. -35.d0) expa1 = exp(a1-temp)
+         if ((a2-temp) .ge. -35.d0) expa2 = exp(a2-temp)
+         if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
 
-          u(1) = (0.1d0*expa1+0.5d0*expa2+expa3) / (expa1+expa2+expa3)
-      return
-      end
+         u(1) = (0.1d0*expa1+0.5d0*expa2+expa3) / (expa1+expa2+expa3)
+     return
+     end
 """
 
 f2py.compile(prob_def_f.encode('ascii'), modulename='problemdef', verbose=0)
@@ -129,9 +129,9 @@ solver = bacoli_py.Solver()
 # Specify the number of PDE's in this system.
 npde = 1
 
-# Pack all of these callbacks and the number of PDE's into a 
+# Pack all of these callbacks and the number of PDE's into a
 # ProblemDefinition object.
-problem_definition = bacoli_py.ProblemDefinition(npde, f=f._cpointer, 
+problem_definition = bacoli_py.ProblemDefinition(npde, f=f._cpointer,
                                             bndxa=bndxa._cpointer,
                                             bndxb=bndxb._cpointer,
                                             uinit=uinit._cpointer)

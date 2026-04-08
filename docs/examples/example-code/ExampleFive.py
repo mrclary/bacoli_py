@@ -60,11 +60,11 @@ def uinit(x, u):
     u[2] = tempt1/numpy.cosh(tempt2*x)*numpy.cos(1.5*x)
     u[3] = tempt1/numpy.cosh(tempt2*x)*numpy.sin(1.5*x)
 
-    return u 
+    return u
 
 # Instantiate problem definition object.
-problem_definition = bacoli_py.ProblemDefinition(npde, f=f, 
-                                            bndxa=bndxa, 
+problem_definition = bacoli_py.ProblemDefinition(npde, f=f,
+                                            bndxa=bndxa,
                                             bndxb=bndxb,
                                             uinit=uinit)
 

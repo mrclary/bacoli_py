@@ -10,13 +10,13 @@ class Solver:
     """PDE solver wrapping the BACOLI and BACOLRI software packages.
 
     Computes an error controlled numerical solution to a given system
-    of parabolic 1D partial differential equations. 
+    of parabolic 1D partial differential equations.
     """
 
     def __init__(self, nint_max=500, kcol=4, t_int='b', s_est='loi', maxord=None,
                  ini_ss=None):
         """A solver object, may be passed optional arguments which determine
-           the functionality of the underlying solver. 
+           the functionality of the underlying solver.
 
         Parameters
         ----------
@@ -31,17 +31,17 @@ class Solver:
             schemes be used. t_int = 'b' corresponds to an adaptive order BDF.
             method, t_int = 'r' corresponds to a 5th order Runge-Kutta Method.
             Default value of 'b'.
-        s_est : string 
+        s_est : string
             Determines which of the two spatial error estimation schemes will
             be used, LOI/LE (s_est = 'loi') and SCI/ST (s_est = 'sci'). Default
             value of 'loi'.
         maxord : int
             The maximum order of BDF method to be used in time integration.
             Only used if t_int = 'b'. 1 <= maxord <= 5
-        ini_ss : float 
+        ini_ss : float
             Initial stepsize for time integration. If not
             provided will be chosen automatically.
-        
+
         Raises
         ------
         ValueError
@@ -97,7 +97,7 @@ class Solver:
         else:
             raise TypeError("maxord must be an integer.")
 
-        # If ini_ss not provided, set to default value and handle it on the 
+        # If ini_ss not provided, set to default value and handle it on the
         # Fortran side.
         if ini_ss != None:
             if isinstance(ini_ss, numbers.Number):
@@ -139,16 +139,16 @@ class Solver:
         ----------
         problem_definition : :class:`ProblemDefinition`
             Object containing callback functions which define the problem to be solved.
-        initial_time : float 
+        initial_time : float
             Initial point on the time domain.
         initial_mesh : castable to floating point ndarray
             The initial spatial mesh. If it has length 2, then these are assumed to be the
             boundaries of the spatial domain and an initial mesh is automatically generated
             which is adapted to the behaviour of the initial conditions.
         tspan : castable to floating point ndarray
-            Vector or scalar containing times at which the solution will be output. 
+            Vector or scalar containing times at which the solution will be output.
         xspan : castable to floating point ndarray
-            Vector or scalar containing points at which the solution will be output. 
+            Vector or scalar containing points at which the solution will be output.
         atol : castable to floating point ndarray
             Absolute error tolerance. Can be either a scalar or a numpy array.
         rtol : castable to floating point ndarray
@@ -163,12 +163,12 @@ class Solver:
         deriv : bool
             Indicates that the returned Solution object should contain the first
             spatial derivative at each point.
-            
+
         Returns
         -------
         bacoli_solution : :class:`Evaluation`
             A object containing the results which have been computed with BACOLI.
-        
+
         Raises
         ------
         ValueError
@@ -181,14 +181,14 @@ class Solver:
         if not isinstance(problem_definition, ProblemDefinition):
             raise TypeError('First argument must be a ProblemDefinition '
                            + 'object containing necissary callback functions.')
-        
+
         # Validate initial time.
         if not isinstance(initial_time, numbers.Number):
             raise TypeError('initial_time must be a scalar quantity.')
 
 
 
-        # Make sure initial spatial mesh contains at least the left and right 
+        # Make sure initial spatial mesh contains at least the left and right
         # extents of a spatial domain and if it is of correcy type.
         if not isinstance(initial_mesh, np.ndarray):
             try:
@@ -200,7 +200,7 @@ class Solver:
         # Validate vectorization flag
         if not isinstance(compiled_callbacks, bool):
             raise ValueError('compiled_callbacks must have type bool.')
-                
+
         # Check that initial_mesh has >= 2 elements
         if len(initial_mesh) < 2:
             raise ValueError('initial_mesh must contain >= 2 elements.')
@@ -244,7 +244,7 @@ class Solver:
             atol = np.asarray(atol, dtype=np.float64)
         elif not isinstance(atol, np.ndarray):
             try:
-                atol = np.asarray(atol, dtype=np.float64) 
+                atol = np.asarray(atol, dtype=np.float64)
             except ValueError:
                 print('Could not convert atol into numpy array.')
                 raise
@@ -264,7 +264,7 @@ class Solver:
             rtol = np.asarray(rtol, dtype=np.float64)
         elif not isinstance(rtol, np.ndarray):
             try:
-                rtol = np.asarray(rtol, dtype=np.float64) 
+                rtol = np.asarray(rtol, dtype=np.float64)
             except ValueError:
                 print('Could not convert rtol into numpy array.')
                 raise
@@ -279,7 +279,7 @@ class Solver:
 
         # Validate dirichlet and convert to acceptable form.
         if dirichlet == False:
-            dirichlet = 0 
+            dirichlet = 0
         elif dirichlet == True:
             dirichlet = 1
         else:
@@ -288,7 +288,7 @@ class Solver:
         is_tstop = None
         # Validate tstop.
         if tstop == None:
-            tstop = -1 
+            tstop = -1
             is_tstop = False
         else:
             # Check if tstop is a number by attempting to convert it to float.
@@ -299,7 +299,7 @@ class Solver:
                 if (self.t_int == 1):
                     print("Note: when using Solver with t_int ='r', setting " \
                         + "tstop has no effect.")
-        
+
         # Initialize Bacoli95 solver object.
         idid = self.bacoli_obj.initialize(npde=problem_definition.npde,
             nint_max=self.nint_max, kcol=self.kcol, s_est=self.s_est,
@@ -335,7 +335,7 @@ class Solver:
 
 
                 # Make vectorized call with f.
-                problem_definition.f(t, x, u_sliced, ux_sliced, 
+                problem_definition.f(t, x, u_sliced, ux_sliced,
                     uxx_sliced, fval_sliced)
 
                 for i in range(int(npde)):
@@ -347,7 +347,7 @@ class Solver:
             def __fvec(t, x, u, ux, uxx, fval, npde, vnpts):
                 pass
 
-        # Create arrays to be returned to user. Values for calls to 
+        # Create arrays to be returned to user. Values for calls to
         # bacoli95_vals are appended to this array and final result is returned
         # to caller.
         solution = np.empty(shape=(npde, tspan.size, xspan.size))
@@ -364,7 +364,7 @@ class Solver:
         # Main loop
         for i in range(tspan.size):
             # If an output time is equal to the initial time, then call
-            # the function specifying initial conditions. 
+            # the function specifying initial conditions.
             if tspan[i] == initial_time:
                 raise ValueError('tspan can not include the initial point in time.')
 
@@ -410,5 +410,5 @@ class Solver:
 
         return {
             '-1000' : 'Memory allocation error occured.',
-       
+
         }.get(idid, 'Undefined Error: Please report to developers.')
