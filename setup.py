@@ -12,7 +12,7 @@ https://bacoli-py.readthedocs.io/en/latest/.
 For any questions or suggestions please email Connor Tannahill at ctannahill3@gmail.com
 """
 
-version      = '1.0.4'
+version      = '1.0.5.dev0'
 distname     = 'bacoli_py'
 description  = 'Python package for the error controlled numerical solution to 1D time-dependent PDEs'
 url          = 'https://pypi.org/project/bacoli_py/'
