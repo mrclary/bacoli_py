@@ -120,11 +120,11 @@ class Solver:
 
         # Convert all arguments into numpy arrays for passing to Fortran.
         try:
-            self.nint_max = array(nint_max, dtype=np.int)
-            self.kcol = array(kcol, dtype=np.int)
-            self.t_int = array(t_int, dtype=np.int)
-            self.s_est = array(s_est, dtype=np.int)
-            self.maxord = array(maxord, dtype=np.int)
+            self.nint_max = array(nint_max, dtype=int)
+            self.kcol = array(kcol, dtype=int)
+            self.t_int = array(t_int, dtype=int)
+            self.s_est = array(s_est, dtype=int)
+            self.maxord = array(maxord, dtype=int)
             self.ini_ss = array(ini_ss, dtype=np.float64)
         except ValueError:
             print('Could not convert all Solver arguments into numpy arrays')
@@ -311,7 +311,7 @@ class Solver:
 
         # Check that initialization was successful.
         if idid < 0:
-            raise RuntimeError(__get_error_message(self.bacoli_obj.idid))
+            raise RuntimeError(Solver.__get_error_message(self.bacoli_obj.idid))
 
         # Memory used to contain array slices in convernient format when
         # vectorization is to be used
@@ -354,9 +354,6 @@ class Solver:
 
         # Array containing derivative information
         solution_deriv = np.empty(shape=(npde, tspan.size, xspan.size))
-
-        # Create array used to hold values from calls to bacoli95_vals.
-        u_in = np.empty(shape=(npde, xspan.size))
 
         # Set nderiv based on whether the derivative valuse was requested.
         nderiv = 1 if deriv else 0
