@@ -17,19 +17,14 @@ requirements:
   build:
     - python ={{ python_min }}
     - pip
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}  # for Linux; on macOS, this will map to gfortran
   host:
     - python ={{ python_min }}
     - pip
     - setuptools <60
     - numpy <2
-    - libgfortran
   run:
     - python ={{ python_min }}
     - numpy <2
-    - libgfortran
 
 test:
   imports:
