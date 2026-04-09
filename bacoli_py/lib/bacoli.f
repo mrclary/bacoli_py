@@ -1,4 +1,4 @@
-c This file contains the BACOLI (Fortran77) source code (including the 
+c This file contains the BACOLI (Fortran77) source code (including the
 c new code that implements interpolation based spatial error estimates.)
 c
 c Note: for interaction with a Python caller, bacoli has been modified
@@ -9,7 +9,7 @@ c       been vectorized.
 
       subroutine bacoli(t0, tout, atol, rtol, npde, kcol, nintmx, nint,
      &                  x, mflag, rpar, lrp, ipar, lip, y, idid, f,
-     &                  fvec, derivf, bndxa, difbxa, bndxb, difbxb, 
+     &                  fvec, derivf, bndxa, difbxa, bndxb, difbxb,
      &                  uinit, uinitvec, vec)
 
 c-----------------------------------------------------------------------
@@ -51,7 +51,7 @@ c
 c          U  (t,x) = denotes the second partial derivative of U(t,x)
 c           xx       with respect to space variable x.
 c
-c       Furthermore, the above functions are NPDE dimensional vector 
+c       Furthermore, the above functions are NPDE dimensional vector
 c       functions.
 c
 c       BACOLI is a method of lines algorithm which uses bspline
@@ -655,7 +655,7 @@ c For the purposes of INIY and INIYP, the subroutine FDBNDX was
 c developed to replace difbxa and difbxb via central differences on
 c bndxa and bndxb. DDASSL was modified further to take a new MTYPE = 6
 c which signals that approximated ABD linear algebra should be done
-c (MTYPE = 3 is for dense ABD linear algebra), and DDAJAC was modified 
+c (MTYPE = 3 is for dense ABD linear algebra), and DDAJAC was modified
 c to implement this through a minimal number of calls to RES.
 c (This number is the number of columns in a central block of the ABD
 c system: npde*(kcol+2).)
@@ -3383,12 +3383,12 @@ c
 c       Pointers into the floating point work array:
         integer                 iabdtp
 c                               work(iabdtp) contains a copy of the top
-c                               block which is required since lamdec 
+c                               block which is required since lamdec
 c                               overwrites the input collocation matrix.
 c
         integer                 iabdbk
 c                               work(iabdbk) contains a copy of abdblk
-c                               which is required since lamdec 
+c                               which is required since lamdec
 c                               overwrites the input collocation matrix.
 c
         integer                 iabdbt
@@ -3475,8 +3475,8 @@ c                               difbxb
 c                               eval
 c                               uinit
 c                               uinitvec
-c                               lamdec 
-c                               lamsol 
+c                               lamdec
+c                               lamsol
 c                               fdbndx
 c
 c-----------------------------------------------------------------------
@@ -3871,7 +3871,7 @@ c Local Variables:
 c       Pointers into the floating point work array:
         integer                 iabdtp
 c                               work(iabdtp) contains a copy of abdtop
-c                               which is required since lamdec 
+c                               which is required since lamdec
 c                               overwrites the input collocation matrix.
 c
         integer                 iabdbk
@@ -3881,7 +3881,7 @@ c                               overwrites the input collocation matrix.
 c
         integer                 iabdbt
 c                               work(iabdbt) contains a copy of abdbot
-c                               which is required since lamdec 
+c                               which is required since lamdec
 c                               overwrites the input collocation matrix.
 c
         integer                 iu
@@ -3961,8 +3961,8 @@ c     BACOLI --> BACOLIVEC
 c
 c-----------------------------------------------------------------------
 c Subroutines Called:
-c                               lamdec 
-c                               lamsol 
+c                               lamdec
+c                               lamsol
 c                               eval
 c                               f
 c                               difbxa
@@ -3994,7 +3994,7 @@ c     added swap memory for iu, iux, iuxx for vectorized calls.
       swapiux = swapiu + npde*(kcol*nint)
       swapiuxx = swapiux + npde*(kcol*nint)
 
-      idbdu  = swapiuxx  + npde*(kcol*nint) 
+      idbdu  = swapiuxx  + npde*(kcol*nint)
       idbdux = idbdu  + npde*npde
       idbdt  = idbdux + npde*npde
       ifdwrk = idbdt  + npde
@@ -4120,7 +4120,7 @@ c           Put values in proper place in swap array
             do 181 k = 1, npde
                 work(swapiu+(k-1)*nint*kcol+voffset) = work(iu+(k-1))
                 work(swapiux+(k-1)*nint*kcol+voffset) = work(iux+(k-1))
-                work(swapiuxx+(k-1)*nint*kcol+voffset) 
+                work(swapiuxx+(k-1)*nint*kcol+voffset)
      &                  = work(iuxx+(k-1))
   181       continue
 
@@ -4151,7 +4151,7 @@ c     do 200 i = 1, nint
 c         do 210 j = 1, kcol
 c             voffset = j - 1 + kcol*(i-1)
 c             do 220 k = 1, npde
-c                 work(iu + voffset) = 
+c                 work(iu + voffset) =
 c  220         continue
 c 210     continue
 c 200 continue
@@ -4391,12 +4391,12 @@ c
 c       Pointers into the floating point work array:
         integer                 iabdtp
 c                               work(iabdtp) contains a copy of the top
-c                               block which is required since lamdec 
+c                               block which is required since lamdec
 c                               overwrites the input collocation matrix.
 c
         integer                 iabdbk
 c                               work(iabdbk) contains a copy of abdblk
-c                               which is required since lamdec 
+c                               which is required since lamdec
 c                               overwrites the input collocation matrix.
 c
         integer                 iabdbt
@@ -4430,8 +4430,8 @@ c-----------------------------------------------------------------------
 c Subroutines Called:
 c                               bsplvd
 c                               colpnt
-c                               lamdec 
-c                               lamsol 
+c                               lamdec
+c                               lamsol
 c                               revalu
 c
 c-----------------------------------------------------------------------
@@ -5981,7 +5981,7 @@ c           new
 c           Generate the approximate solution and its spatial
 c           derivatives at the current collocation point.
 c           BACOLI --> BACOLIVEC
-c               
+c
 c            call eval(npde,kcol,ii,jj,ncpts,work(iu+voffset),
 c     &                work(iux+voffset),work(iuxx+voffset),fbasis(kk),y)
             call eval(npde,kcol,ii,jj,ncpts,work(iu),
@@ -6017,7 +6017,7 @@ c     Put the points all in back in their place.
   201 continue
 
 c     Put the points all in back in their place.
-c      do 200 i = 1, vnpts 
+c      do 200 i = 1, vnpts
 c          do 210 j = 1, npde
 cc         seems like the indexing is wrong here
 cc              delta(npde+1+npde*(i-1)+j)=work(swapiu+(j-1)*nint*kcol+i
@@ -6027,7 +6027,7 @@ c              delta(npde*i+j)=work(swapiu+(j-1)*nint*kcol+i
 c     &                -1)
 c  210     continue
 c  200 continue
-     
+
       end if
 
 c     Scale (delta(i), i=npde+1,npde*(ncpts-1)) with negative one.

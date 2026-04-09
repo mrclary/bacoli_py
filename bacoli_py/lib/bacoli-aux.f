@@ -9,8 +9,8 @@ c This file contains:
 c (i) The LAMPACK software package: P. Keast. FORTRAN package for
 c solving certain almost block diagonal matrix.
 
-c (ii) The DASSL package, from the SLATEC (www.netlib.org/slatec/) 
-c numerical software collection: 
+c (ii) The DASSL package, from the SLATEC (www.netlib.org/slatec/)
+c numerical software collection:
 c            ddaini,ddajac,ddanrm,ddaslv,ddassl,ddastp,
 c            ddatrp,ddawts,xerhlt,xermsg,xerprn,xgetua,xsetua.
 c SLATEC is in the public domain. It's disclaimer may be found here:
@@ -21,43 +21,43 @@ c were modified to use COLROW for linear algebra, and to pass
 c user-defined subroutines describing BACOLI's PDE system down
 c to RES and JAC.
 c For details regarding DASSL, refer to:
-c K.E. Brenan, S.L. Campbell, and L.R. Petzold. Numerical Solution 
+c K.E. Brenan, S.L. Campbell, and L.R. Petzold. Numerical Solution
 c of Initial Value Problems in Differential Algebraic Equations.
 c SIAM, second edition, 1996.
 
 c (iii) From the paper, de Boor, C., Package for Calculating with
 c B-splines, c SIAM J. Numer. Anal., vol. 14, no. 3, June 1977,
-c pp. 441-472: 
+c pp. 441-472:
 c            bsplvd, bsplvn, interv.
-c However, the versions of these routines appearing in BACOLI 
-c have been modified or rewritten to some extent. 
+c However, the versions of these routines appearing in BACOLI
+c have been modified or rewritten to some extent.
 c Similar versions of BSPLVD and INTERV are available
 c at www.netlib.org/pppack and a similar version of BSPLVN is
 c available at www.netlib.org/slatec. As mentioned above, software
-c from SLATEC is in the public domain. It's disclaimer may be found 
+c from SLATEC is in the public domain. It's disclaimer may be found
 c at: www.netlib.org/slatec/src/aaaaaa.f. There does not appear to
 c be a license associated with the PPPACK collection.
 
 c (iv) From the EISPACK (www.netlib.org/eispack/) numerical software
-c collection: 
-c            imtql1, imtql2, pythag. 
-c There does not appear to be a license associated with the 
+c collection:
+c            imtql1, imtql2, pythag.
+c There does not appear to be a license associated with the
 c EISPACK collection.
 
-c (v) From Patrick Keast: 
-c            gauleg. 
-c Written by Pat Keast, Dalhousie University. No licensing 
+c (v) From Patrick Keast:
+c            gauleg.
+c Written by Pat Keast, Dalhousie University. No licensing
 c information available.
 
 c (vi) From the LINPACK (www.netlib.org/linpack/) numerical software
-c collection: 
+c collection:
 c            dgbfa, dgbsl, dgefa, dgesl.
 c We have modified this source code slightly: declarations like
 c array(1) were changed to array(*). There does not appear to
 c be a license associated with the LINPACK collection.
 
 c (vii) From the BLAS (www.netlib.org/blas/) numerical software
-c collection: 
+c collection:
 c            daxpy, dcopy, ddot, dscal, idamax.
 c These routines are subject to the following legal restrictions:
 c see www.netlib.org/blas/faq.html#2
@@ -2425,7 +2425,7 @@ c     BACOLI --> BACOLIVEC
       call lamdec(neq, wm(npd), npde, 2*npde, wm(npdbk1), kcol*npde,
      &            (kcol+nconti)*npde, nint, wm(npdbt1), npde,
      &            iwm(lipvt), ier)
-      
+
 
 c     Second call to crdcmp removed.
 
@@ -2665,7 +2665,7 @@ c      x = delta(1:neq)
       call lamsol(wm(npd), npde, 2*npde, wm(npdbk1), kcol*npde,
      &            (kcol+nconti)*npde, nint, wm(npdbt1), npde,
      &            iwm(lipvt), x, delta)
-     
+
 
 c     Second call to crslve removed.
 
@@ -5782,7 +5782,7 @@ C
         INTEGER NRWTOP, NOVRLP, NRWBLK, NCLBLK, NBLOKS, NRWBOT,
      *          NRWTP1, NRWBK1, NRWTP0, NRWBT1, NROWEL, NRWEL1,
      *          NVRLP0, NBLKS1, NBKTOP, NBKTP0, J, LOOP, INCR,
-     *          K, INCRTP, INCRI, JPIVOT, JRWTOP, NRWBTL, L, 
+     *          K, INCRTP, INCRI, JPIVOT, JRWTOP, NRWBTL, L,
      *          L1, IPLUSN, INCRN, IPVTN, NRWELL, IPVTI, NVRLP1,
      *          I, INCRJ, LL
 C
@@ -6153,7 +6153,7 @@ C
         DATA ZERO/0.0D0/
 C
         INTEGER NRWTP1, NROWEL, NRWEL1, NVRLP0, I, IPLUS1, IPVT, J,
-     *          L, K, KPLUS1, JPLUS1, JMINN, LOOP, INCRJ, IPLUSN, 
+     *          L, K, KPLUS1, JPLUS1, JMINN, LOOP, INCRJ, IPLUSN,
      *          INCRN, IRWBLK, IPVBLK, JRWBLK, INCR
 C***************************************************************
 C

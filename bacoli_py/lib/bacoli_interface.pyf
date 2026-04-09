@@ -1,7 +1,7 @@
 !    -*- f90 -*-
 ! Note: the context of this file is case sensitive.
 
-python module bacoli__user__routines 
+python module bacoli__user__routines
     interface f
         subroutine f(t, x, u, ux, uxx, fval, npde)
             integer,intent(in, hide) :: npde
@@ -60,7 +60,7 @@ python module bacoli__user__routines
             double precision,dimension(npde),intent(in,out) :: bval
         end subroutine bndxb
     end interface bndxb
-    
+
     interface difbxa
         subroutine difbxa(t, u, ux, dbdu, dbdux, dbdt, npde)
             integer,intent(in, hide) :: npde
@@ -91,10 +91,10 @@ python module bacoli__user__routines
             double precision,intent(in) :: x
             double precision,dimension(npde),intent(in,out) :: u
         end subroutine uinit
-    end interface 
-end python module bacoli__user__routines 
+    end interface
+end python module bacoli__user__routines
 
-python module bacoli_interface ! in 
+python module bacoli_interface ! in
     interface  ! in :bacoli_interface
         module bacoli_interface ! in :bacoli_interface:bacoli_interface.f95
 
@@ -149,7 +149,7 @@ python module bacoli_interface ! in
             subroutine sol_teardown ! in :bacoli_interface:bacoli_interface.f95:bacoli_interface
             end subroutine sol_teardown
         end module bacoli_interface
-    end interface 
+    end interface
 end python module bacoli_interface
 
 ! This file was auto-generated with f2py (version:2).

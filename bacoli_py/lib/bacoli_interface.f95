@@ -1,5 +1,5 @@
 module type_interface
-    type, public :: interface_sol 
+    type, public :: interface_sol
         integer                   :: npde
 
         integer                   :: kcol
@@ -252,7 +252,7 @@ module bacoli_interface
             difbxa, is_difbxa, difbxb, is_difbxb, idid, vec)
             implicit none
 
-            double precision, intent(in) :: tout        
+            double precision, intent(in) :: tout
             integer, intent(out)         :: idid
             logical, intent(in)          :: is_derivf, is_difbxa, is_difbxb
             logical                      :: use_fd_both, use_fd_bconds, use_fd_pde
@@ -272,7 +272,7 @@ module bacoli_interface
             double precision, allocatable :: wm(:), xi(:)
             integer                       :: ier, i
             logical, intent(in)           :: vec
- 
+
             ! Set flags about whether or not to use finite differences.
             use_fd_both = (.not. is_derivf) .and. ((.not. is_difbxa) &
                 .or. (.not. is_difbxb))
@@ -515,7 +515,7 @@ module bacoli_interface
                 if (sol%s_est == 0) then
                     lrp = lrp+2+3*kcol+kcol*kcol-18*nint_max &
                         -nint_max*kcol*kcol                  &
-                        -9*nint_max*kcol-3*npde*nint_max          
+                        -9*nint_max*kcol-3*npde*nint_max
                 end if
 
                 ! BACOLRI --> BACOLRIVEC
