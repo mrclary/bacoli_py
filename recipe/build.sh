@@ -1,3 +1,7 @@
 #!/bin/bash
+set -ex
 
-$PYTHON -m pip install --no-deps $RECIPE_DIR/../dist/bacoli*.whl
+export LDFLAGS="${LDFLAGS} -Wl,-headerpad_max_install_names"
+export FCFLAGS="${FCFLAGS} -fPIC"
+
+$PYTHON -m pip install . --no-build-isolation --no-deps -vv
