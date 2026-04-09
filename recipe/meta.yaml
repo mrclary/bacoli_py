@@ -1,0 +1,32 @@
+{% set version = "1.0.5.dev0" %}
+{% set python_min = "3.10" %}
+{% set build = 0 %}
+
+package:
+  name: bacoli-py
+  version: {{ version }}
+
+build:
+  number: {{ build }}
+  string: {{ target_platform | replace('-', '_') }}_py{{ python | replace('.', '') }}_{{ build }}
+
+requirements:
+  build:
+    - python ={{ python_min }}
+    - numpy
+  host:
+    - python ={{ python_min }}
+    - setuptools
+  run:
+    - python ={{ python_min }}
+    - numpy >=1.23,<2
+
+test:
+  imports:
+    - bacoli_py
+
+about:
+  home: https://github.com/mrclary/bacoli_py
+  description: |
+    bacoli_py is a Python package for solving systems of 1D Parabolic
+    Partial Differential Equations.
