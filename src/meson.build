@@ -15,7 +15,7 @@ pyf_file = 'lib/bacoli_interface.pyf'
 add_project_arguments('-ffixed-form', language: 'fortran')
 
 # Determine platform suffix
-ext = run_command(
+bacoli_so = 'bacoli_interface' + run_command(
   python,
   '-c',
   'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))',
@@ -26,15 +26,16 @@ ext = run_command(
 f2py_module = custom_target(
   'bacoli_interface_module',
   input: [pyf_file] + fortran_sources,
-  output: 'bacoli_interface' + ext,
+  output: bacoli_so,
   command: [
     python, '-m', 'numpy.f2py',
     '-c',
     '-m', 'bacoli_interface',
-    '@INPUT@'
+    '@INPUT@',
+    '&&', 'mv', bacoli_so, 'src/'
   ],
   install: true,
-  install_dir: 'bacoli_py',
+  install_dir: python.get_install_dir() / 'bacoli_py',
   install_tag: 'runtime'
 )
 
@@ -52,13 +53,13 @@ python.install_sources(
 # Install data files (licenses)
 install_data(
   '../LICENSE.txt',
-  install_dir: 'bacoli_py',
+  install_dir: get_option('datadir') / 'bacoli_py',
   install_tag: 'license'
 )
 
 install_data(
   'lib/BACOLI-LICENSE.txt',
   'lib/BACOLRI-LICENSE.txt',
-  install_dir: 'bacoli_py',
+  install_dir: python.get_install_dir() / 'bacoli_py',
   install_tag: 'license'
 )
