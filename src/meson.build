@@ -15,7 +15,7 @@ pyf_file = 'lib/bacoli_interface.pyf'
 add_project_arguments('-ffixed-form', language: 'fortran')
 
 # Determine platform suffix
-ext_suffix = run_command(
+ext = run_command(
   python,
   '-c',
   'import sysconfig; print(sysconfig.get_config_var("EXT_SUFFIX"))',
@@ -26,7 +26,7 @@ ext_suffix = run_command(
 f2py_module = custom_target(
   'bacoli_interface_module',
   input: [pyf_file] + fortran_sources,
-  output: 'bacoli_interface' + ext_suffix,
+  output: 'bacoli_interface' + ext,
   command: [
     python, '-m', 'numpy.f2py',
     '-c',
@@ -34,28 +34,31 @@ f2py_module = custom_target(
     '@INPUT@'
   ],
   install: true,
-  install_dir: python.get_install_dir() / 'bacoli_py'
+  install_dir: 'bacoli_py',
+  install_tag: 'runtime'
 )
 
 # Install Python sources
 python.install_sources(
   [
-    '__init__.py',
-    'Evaluation.py',
-    'ProblemDefinition.py',
-    'Solver.py'
+    'bacoli_py/__init__.py',
+    'bacoli_py/Evaluation.py',
+    'bacoli_py/ProblemDefinition.py',
+    'bacoli_py/Solver.py'
   ],
   subdir: 'bacoli_py'
 )
 
 # Install data files (licenses)
 install_data(
-  '../../LICENSE.txt',
-  install_dir: get_option('datadir') / 'bacoli_py'
+  '../LICENSE.txt',
+  install_dir: 'bacoli_py',
+  install_tag: 'license'
 )
 
 install_data(
   'lib/BACOLI-LICENSE.txt',
   'lib/BACOLRI-LICENSE.txt',
-  install_dir: python.get_install_dir() / 'bacoli_py/lib'
+  install_dir: 'bacoli_py',
+  install_tag: 'license'
 )
