@@ -162,13 +162,13 @@ module bacoli_interface
             integer, intent(out) :: idid
             logical, intent(in)  :: is_maxord, is_ini_ss, is_tstop
             double precision, intent(in) :: t0, ini_ss, tstop
-        !f2py integer intent (hide), depend (atol) :: atol_size = len(atol)
+            !f2py integer intent (hide), depend (atol) :: atol_size = len(atol)
             double precision, intent(in) :: atol(atol_size)
-        !f2py integer intent (hide), depend (rtol) :: rtol_size = len(atol)
+            !f2py integer intent (hide), depend (rtol) :: rtol_size = len(atol)
             double precision, intent(in) :: rtol(rtol_size)
-        !f2py integer intent (hide), depend (x) :: x_size = len(x)
+            !f2py integer intent (hide), depend (x) :: x_size = len(x)
             double precision, intent(in) :: x(x_size)
-        !f2pt integer intent (hide), depend (xspan) :: xspan_size = len(xspan)
+            !f2py integer intent (hide), depend (xspan) :: xspan_size = len(xspan)
             double precision, intent(in) :: xspan(xspan_size)
 
             ! Initialize constant values in sol structured type
@@ -455,7 +455,7 @@ module bacoli_interface
 
         subroutine allocate_arrays(x, xspan, rtol, atol, npde, kcol, nint_max)
             implicit none
-            integer                      :: cpar, rpar, ipar, ly, ier
+            integer                      :: ly, ier
             double precision, intent(in) :: x(:), xspan(:), rtol(:), atol(:)
             integer, intent(in)          :: npde, kcol, nint_max
             integer                      :: lrp, lcp, lip
@@ -463,7 +463,7 @@ module bacoli_interface
 
             if (sol%t_est == 0) then
                 ! Set work array sizes for BACOLI.
-                lrp = 113 + 59*npde + 27*nint_max + 13*npde*npde       &
+                lrp = 113 + 59*npde + 27*nint_max + 13*npde*npde      &
                    + 9*kcol + 24*kcol*nint_max + 6*nint_max*kcol*kcol &
                    + 27*npde*nint_max*kcol + 7*nint_max*npde          &
                    + 2*npde*npde*nint_max*kcol*kcol                   &
@@ -620,25 +620,41 @@ module bacoli_interface
            double precision, intent(out) :: dfdux(npde,npde)
            double precision, intent(out) :: dfduxx(npde,npde)
 
+           ! Avoid -Wunused-dummy-argument
+           if (.false.) dfdu(1,1) = t
+           if (.false.) dfdu(1,1) = x
+           if (.false.) dfdu(1,1) = u(1)
+           if (.false.) dfdu(1,1) = ux(1)
+           if (.false.) dfdu(1,1) = uxx(1)
+
            dfdu = 0 ; dfdux = 0 ; dfduxx = 0
         end subroutine
 
 !-----------------------------------------------------------------------
         subroutine uinitvec(x, u, vnpts, npde)
-            integer :: vnpts, npde
-            integer :: x(vnpts)
-            double precision :: u(vnpts*npde)
+           integer :: vnpts, npde
+           integer :: x(vnpts)
+           double precision :: u(vnpts*npde)
+
+           ! Avoid -Wunused-dummy-argument
+           if (.false.) x = 0
+           if (.false.) u = 0
         end subroutine
 !-----------------------------------------------------------------------
 
         subroutine dummy_difbx(t, u, ux, dbdu, dbdux, dbdt, npde)
            implicit none
            ! Dummy - used if user does not provide difbxa, difbxb.
-           integer,  intent(in)  :: npde
+           integer, intent(in) :: npde
            double precision, intent(in)  :: t, u(npde), ux(npde)
            double precision, intent(out) :: dbdu(npde,npde)
            double precision, intent(out) :: dbdux(npde,npde)
            double precision, intent(out) :: dbdt(npde)
+
+           ! Avoid -Wunused-dummy-argument
+           if (.false.) dbdt = t
+           if (.false.) dbdt = u
+           if (.false.) dbdt = ux
 
            dbdu = 0 ; dbdux = 0 ; dbdt = 0
         end subroutine

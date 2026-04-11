@@ -41,6 +41,7 @@
 ! .. Intrinsic Functions ..
       INTRINSIC epsilon, huge, kind, log10, tiny
 ! ..
+      d1mach = tiny(zero)
       SELECT CASE (i)
       CASE (1)
         d1mach = tiny(zero)
@@ -128,6 +129,7 @@
 ! .. Intrinsic Functions ..
       INTRINSIC digits, huge, maxexponent, minexponent, radix
 ! ..
+      i1mach = 5
       SELECT CASE (i)
       CASE (1)
 ! Standard input

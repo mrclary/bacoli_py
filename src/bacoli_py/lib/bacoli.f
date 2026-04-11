@@ -2347,9 +2347,9 @@ c
 c-----------------------------------------------------------------------
 
 c     quad is the number of quadrature points used per subinterval
-      if (est .eq. 0) then
-         quad = kcol + 2
-      elseif (est .eq. 1) then
+C     if (est .eq. 0) then
+      quad = kcol + 2
+      if (est .eq. 1) then
          quad = kcol + 3
       endif
 
@@ -2362,14 +2362,14 @@ c     Also, the SCI uses a greater number of quadrature points.
       iusol2 = iusol1 + npde * nint * quad
       ierrci = iusol2 + npde * nint * quad
       iliu   = ierrci + npde * nint
-      if (est .eq. 0) then
-         ilium  = iliu   + npde * nint * (kcol - 3)
-         ih     = 1
-         ihd    = ih     + 2 * quad
-         ig     = ihd    + 2 * quad
-         ibassc = ig     + (kcol - 3) * quad
-         ibasm  = ibassc + (kcol + nconti) * (kcol - 3) * nint
-      elseif (est .eq. 1) then
+c      if (est .eq. 0) then
+      ilium  = iliu   + npde * nint * (kcol - 3)
+      ih     = 1
+      ihd    = ih     + 2 * quad
+      ig     = ihd    + 2 * quad
+      ibassc = ig     + (kcol - 3) * quad
+      ibasm  = ibassc + (kcol + nconti) * (kcol - 3) * nint
+      if (est .eq. 1) then
          ilium  = iliu   + npde * nint * (kcol - 2)
          ih     = 1
          ihd    = ih     + 2 * quad * nint
@@ -2488,7 +2488,8 @@ c     Calculate errint and errcom.
 
 c     When using the LOI scheme, error is actually estimated for a
 c     solution that is one order lower than that which is computed.
-      if (est .eq. 0) power = one/dble(kcol+1)
+c      if (est .eq. 0) then
+      power = one/dble(kcol+1)
       if (est .eq. 1) power = one/dble(kcol+2)
 
 c     Take the square root and update errint and errcom.
@@ -3486,6 +3487,9 @@ c                               dcopy
 c                               dscal
 c
 c-----------------------------------------------------------------------
+c Avoid -Wunused-dummy-argument
+      if (.false.) call uinitvec
+
       nels = npde*npde*kcol*(kcol+nconti)
 
 c     Set the pointers into the floating point work array.
@@ -5395,6 +5399,8 @@ c       double precision:
 c                               daxpy
 c
 c-----------------------------------------------------------------------
+c Avoid -Wunused-dummy-argument
+      if (.false.) yprime = 0
 
 c     Set pointers into the temporary floating point work array.
       iu     = 1
@@ -5715,6 +5721,8 @@ c Subroutines Called:
 c                              calres
 c
 c-----------------------------------------------------------------------
+c Avoid -Wunused-dummy-argument
+      if (.false.) ires = 0
 
       npde   = ipar(inpde)
       kcol   = ipar(ikcol)

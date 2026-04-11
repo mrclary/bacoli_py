@@ -464,6 +464,7 @@ c                               coefficients when ipar(icount)=0 before
 c                               remeshing when using radau_{kcol+1}.
 c
         integer                 irold
+      data irold/1/
 c                               irold is the value of ipar(ixold) before
 c                               remeshing.
 c
@@ -857,14 +858,14 @@ c-----------------------------------------------------------------------
 c     Calculate the number of quadrature points used for error
 c     estimate and the extra storage requirements of errest.
 c     The SCI scheme needs slightly more storage here.
-      if (mflag(5) .eq. 0) then
-         necpts = (kcol + 2) * nint
-         lenerr = (2 * necpts + nint) * npde
-     &          + ((kcol - 3) * nint + (nint + 1) * 2) * npde
-         lencof = (kcol + 1) * (kcol + 2)
-     &          + (kcol + nconti) * (kcol - 3) * nint
-     &          + (kcol + nconti) * 2 * (nint + 1)
-      elseif (mflag(5) .eq. 1) then
+C     if (mflag(5) .eq. 0) then
+      necpts = (kcol + 2) * nint
+      lenerr = (2 * necpts + nint) * npde
+     &       + ((kcol - 3) * nint + (nint + 1) * 2) * npde
+      lencof = (kcol + 1) * (kcol + 2)
+     &       + (kcol + nconti) * (kcol - 3) * nint
+     &       + (kcol + nconti) * 2 * (nint + 1)
+      if (mflag(5) .eq. 1) then
          necpts = (kcol + 3) * nint
          lenerr = (2 * necpts + nint) * npde
      &          + ((kcol - 2) * nint + (nint + 1) * 2) * npde
@@ -2455,9 +2456,9 @@ c                               lowint
 c
 c-----------------------------------------------------------------------
 c     quad is the number of quadrature points used per subinterval
-      if (est .eq. 0) then
-         quad = kcol + 2
-      elseif (est .eq. 1) then
+C     if (est .eq. 0) then
+      quad = kcol + 2
+      if (est .eq. 1) then
          quad = kcol + 3
       endif
 
@@ -2470,14 +2471,14 @@ c     Also, the SCI uses a greater number of quadrature points.
       iusol2 = iusol1 + npde * nint * quad
       ierrci = iusol2 + npde * nint * quad
       iliu   = ierrci + npde * nint
-      if (est .eq. 0) then
-         ilium  = iliu   + npde * nint * (kcol - 3)
-         ih     = 1
-         ihd    = ih     + 2 * quad
-         ig     = ihd    + 2 * quad
-         ibassc = ig     + (kcol - 3) * quad
-         ibasm  = ibassc + (kcol + nconti) * (kcol - 3) * nint
-      elseif (est .eq. 1) then
+C     if (est .eq. 0) then
+      ilium  = iliu   + npde * nint * (kcol - 3)
+      ih     = 1
+      ihd    = ih     + 2 * quad
+      ig     = ihd    + 2 * quad
+      ibassc = ig     + (kcol - 3) * quad
+      ibasm  = ibassc + (kcol + nconti) * (kcol - 3) * nint
+      if (est .eq. 1) then
          ilium  = iliu   + npde * nint * (kcol - 2)
          ih     = 1
          ihd    = ih     + 2 * quad * nint
@@ -2596,7 +2597,8 @@ c     Calculate errint and errcom.
 
 c     When using the LOI scheme, error is actually estimated for a
 c     solution that is one order lower than that which is computed.
-      if (est .eq. 0) power = one/dble(kcol+1)
+C     if (est .eq. 0)
+      power = one/dble(kcol+1)
       if (est .eq. 1) power = one/dble(kcol+2)
 
 c     Take the square root and update errint and errcom.
@@ -3159,6 +3161,9 @@ c                               dcopy
 c                               dscal
 c
 c-----------------------------------------------------------------------
+c Avoid -Wunused-dummy-argument
+      if (.false.) call uinitvec
+
       nels = npde*npde*kcol*(kcol+nconti)
 
 c     Set the pointers into the floating point work array.
@@ -3606,6 +3611,8 @@ c Subroutines Called:
 c                               calfcn
 c
 c-----------------------------------------------------------------------
+c Avoid -Wunused-dummy-argument
+      if (.false.) call derivf
 
       npde   = ipar(inpde)
       kcol   = ipar(ikcol)
@@ -5675,7 +5682,7 @@ c     Other precomputed factors.
 c
 c-----------------------------------------------------------------------
 c Loop indices
-      integer                 i, j, k
+      integer                 i, j
 c
 c-----------------------------------------------------------------------
 
@@ -7168,7 +7175,6 @@ c     Parameters:
 c     ----------------------------------------------------------------
 c     Work offsets
 c     ------------
-      integer    xioff
 c     Offset for uniform mesh partitioning spatial domain used in this
 c     equidistribution algorithm.
       integer    moff
@@ -7210,6 +7216,12 @@ c     Locals
       double precision sigma, sigmai, temp1, temp, emach, h1, h2
       double precision d1mach
       external         d1mach
+
+c Avoid -Wunused-dummy-argument
+      if (.false.) then
+         xa = 0
+         xb = 0
+      endif
 
       ierr = 0
 

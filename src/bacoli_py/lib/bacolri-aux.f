@@ -1509,6 +1509,11 @@ C --------- DUPLIFY N FOR COMMON BLOCK CONT -----
       NN=N
       NN2=2*N
       NN3=3*N
+C Avoid -Wmaybe-uninitialized
+      DYNOLD=1.0D-16
+      THQOLD=0.D0
+      HACC=1.0D-6
+      ERRACC=1.0D-2
 C ------- COMPUTE MASS MATRIX FOR IMPLICIT CASE ----------
 c-----------------------------------------------------------------------
 c      write(*,*) 'calling mas'
@@ -2627,8 +2632,8 @@ c Last modified by Rong Wang, April 23, 2003.
 c
 c-----------------------------------------------------------------------
 c Constants:
-        integer                 nconti
-        parameter              (nconti = 2)
+      integer                 nconti
+      parameter              (nconti = 2)
 c
 c-----------------------------------------------------------------------
 c subroutine parameters
@@ -2646,7 +2651,7 @@ c                               ccrcmp
 c
 c-----------------------------------------------------------------------
 
-      BB = CMPLX(ALPHN,BETAN)
+      BB = CMPLX(ALPHN,BETAN,KIND=KIND(0.0D0))
       ITEMP = 0
 c      DO 100 I = 1, 2
       i = 1
@@ -2803,6 +2808,12 @@ c-----------------------------------------------------------------------
       HEE1=DD1/H
       HEE2=DD2/H
       HEE3=DD3/H
+C Avoid -Wunused-dummy-argument
+      if (.false.) then
+         call difbxa
+         call difbxb
+         call uinit
+      endif
 C
       DO 10 I=1,N
          F1(I)=HEE1*Z1(I)+HEE2*Z2(I)+HEE3*Z3(I)
@@ -2906,11 +2917,11 @@ c Last modified by Rong Wang, April 23, 2003.
 c
 c-----------------------------------------------------------------------
 c Constants:
-        integer                 nconti
-        parameter              (nconti = 2)
+      integer                 nconti
+      parameter              (nconti = 2)
 c
-        double precision        zero
-        parameter              (zero = 0.0D0)
+      double precision        zero
+      parameter              (zero = 0.0D0)
 c
 c-----------------------------------------------------------------------
 c subroutine parameters
@@ -2921,7 +2932,7 @@ c subroutine parameters
       DOUBLE COMPLEX E2R(*),CZ2(N),CXIN(N)
 c-----------------------------------------------------------------------
 c local variables
-      INTEGER I,J,K,M,L,III,II,KK,MM,NPDTP1,
+      INTEGER I,J,K,M,III,II,KK,MM,NPDTP1,
      &        NPDBK1,NPDBT1
       DOUBLE PRECISION S1,S2,S3,BB
 
@@ -2961,15 +2972,15 @@ c-----------------------------------------------------------------------
    60 continue
 
       do 80 i = 1, n
-         cz2(i) = cmplx(z2(i),cont(i))
+         cz2(i) = CMPLX(z2(i),cont(i),KIND=KIND(0.0D0))
    80 continue
 
       do 90 i = 1, npde
-         cz2(i) = - cmplx(alphn,betan) * cz2(i)
+         cz2(i) = - cmplx(alphn,betan,KIND=KIND(0.0D0)) * cz2(i)
    90 continue
 
       do 120 i = n-npde+1, n
-         cz2(i) = - cmplx(alphn,betan) * cz2(i)
+         cz2(i) = - cmplx(alphn,betan,KIND=KIND(0.0D0)) * cz2(i)
   120 continue
 
       npdtp1 = 1
