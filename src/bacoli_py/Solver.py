@@ -1,4 +1,4 @@
-import bacoli_interface
+from bacoli_py import bacoli_interface
 from bacoli_py.ProblemDefinition import ProblemDefinition
 from bacoli_py.Evaluation import Evaluation
 import numpy as np

@@ -1,0 +1,25 @@
+[build-system]
+requires = [
+    "meson-python>=0.15",
+    "numpy",
+    # "gfortran",  # Use a conda environment with gfortran for the build environment
+]
+build-backend = "mesonpy"
+
+[project]
+name = "bacoli_py"
+version = "1.0.5.dev0"
+description = "Python package for the error controlled numerical solution to 1D time-dependent PDEs"
+readme = { file = "README.txt", content-type = "text/plain" }
+requires-python = ">=3.10"
+authors = [
+    {name = "Connor Tannahill and Paul Muir", email = "ctannahill3@gmail.com"},
+]
+license-files = [
+    "LICENSE.txt",
+    "src/lib/BACOLI-LICENSE.txt",
+    "src/lib/BACOLRI-LICENSE.txt",
+]
+dependencies = [
+    "numpy",
+]
