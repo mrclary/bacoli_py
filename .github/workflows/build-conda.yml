@@ -1,0 +1,90 @@
+name: Build conda package
+
+on:
+  push:
+    branches:
+    - new-master
+  pull_request:
+    branches:
+    - new-master
+  release:
+    types:
+      - created
+  workflow_dispatch:
+
+jobs:
+  build-conda:
+    name: ${{ matrix.os }} - Python ${{ matrix.python_version }}
+    runs-on: ${{ matrix.os }}
+    env:
+      PYTHON_VERSION: ${{ matrix.python_version }}
+      DISTDIR: ${{ github.workspace }}/dist
+      GITHUB_TOKEN: ${{ github.token }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version: ['3.13']
+        os: ['macos-26', 'ubuntu-latest', 'windows-latest']
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Build Environment
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-file: .github/build-environment.yml
+          create-args: >-
+            python=${{ matrix.python_version }}
+
+      - name: Show Environment
+        run: |
+          CONDA_BLD_PATH=${RUNNER_TEMP}/conda-bld
+          echo "CONDA_BLD_PATH=$CONDA_BLD_PATH" >> $GITHUB_ENV
+
+          micromamba info
+          micromamba list
+          gfortran --version
+
+          env | sort
+
+      - name: Build Conda Package
+        run: |
+          mkdir -p $CONDA_BLD_PATH
+
+          conda build --numpy 2.4 conda-recipe
+
+          conda index $CONDA_BLD_PATH
+
+          conda search -c local --override-channels || true
+
+          CONDA_PKG_PATH=$(ls $CONDA_BLD_PATH/**/bacoli*.conda)
+
+          # Add these to GITHUB_ENV last because macOS renames the wheel
+          echo "CONDA_PKG_PATH=$CONDA_PKG_PATH" >> $GITHUB_ENV
+          echo "NAME=$(basename $CONDA_PKG_PATH)" >> $GITHUB_ENV
+
+      - name: Upload Artifact
+        if: github.event_name != 'release'
+        uses: actions/upload-artifact@v6
+        with:
+          path: ${{ env.CONDA_PKG_PATH }}
+          name: ${{ env.NAME }}
+
+      - name: Get Release
+        if: github.event_name == 'release'
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+
+      - name: Upload Release Asset
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ${{ env.CONDA_PKG_PATH }}
+          asset_name: ${{ env.NAME }}
+          asset_content_type: application/zip
