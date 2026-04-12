@@ -30,8 +30,9 @@ f2py_module = custom_target(
     output: bacoli_so,
     command: [
         python, '-m', 'numpy.f2py',
-        '-c',
+        '--backend', 'meson',
         '-m', 'bacoli_interface',
+        '-c',
         '@INPUT@',
         '&&', 'mv', bacoli_so, 'src/'
     ],
