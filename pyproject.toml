@@ -1,8 +1,10 @@
 [build-system]
 requires = [
     "meson-python>=0.15",
-    "numpy",
-    # "gfortran",  # Use a conda environment with gfortran for the build environment
+    "numpy>=2",
+    # gfortran is not available from PyPi. Create a conda environment with this
+    # package to build bacoli_interface module
+    # "gfortran",
 ]
 build-backend = "mesonpy"
 

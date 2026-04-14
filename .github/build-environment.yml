@@ -3,6 +3,7 @@ channels:
   - conda-forge
 dependencies:
   - conda-build
-  - numpy
-  - meson-python
   - gfortran
+  - meson-python
+  - numpy >=2
+  - python
