@@ -12,6 +12,10 @@ on:
       - created
   workflow_dispatch:
 
+concurrency:
+  group: bacoli-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-conda:
     name: ${{ matrix.os }} - Python ${{ matrix.python_version }}
