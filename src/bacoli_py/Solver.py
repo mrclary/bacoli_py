@@ -1,9 +1,13 @@
+import logging
 from bacoli_py import bacoli_interface
 from bacoli_py.ProblemDefinition import ProblemDefinition
 from bacoli_py.Evaluation import Evaluation
 import numpy as np
 from numpy import array
 import numbers
+
+logger = logging.getLogger(__name__)
+
 
 class Solver:
 
@@ -89,7 +93,7 @@ class Solver:
                 self.is_maxord = True
 
                 if (t_int == 'r'):
-                    print("Note: when using Solver with t_int ='r', setting " \
+                    logger.info("Note: when using Solver with t_int ='r', setting " \
                         + "maxord has no effect.")
         elif maxord == None:
             maxord = 0
@@ -127,7 +131,7 @@ class Solver:
             self.maxord = array(maxord, dtype=int)
             self.ini_ss = array(ini_ss, dtype=np.float64)
         except ValueError:
-            print('Could not convert all Solver arguments into numpy arrays')
+            logger.error('Could not convert all Solver arguments into numpy arrays')
             raise
 
     def solve(self, problem_definition, initial_time, initial_mesh, tspan,
@@ -194,7 +198,7 @@ class Solver:
             try:
                 initial_mesh = np.asarray(initial_mesh, dtype=np.float64)
             except ValueError:
-                print('Could not convert initial_mesh into numpy array.')
+                logger.error('Could not convert initial_mesh into numpy array.')
                 raise
 
         # Validate vectorization flag
@@ -215,7 +219,7 @@ class Solver:
             try:
                 tspan = np.asarray(tspan, dtype=np.float64)
             except ValueError:
-                print('Could not convert tspan into a numpy array.')
+                logger.error('Could not convert tspan into a numpy array.')
                 raise
 
         if tspan.size != 1:
@@ -228,7 +232,7 @@ class Solver:
             try:
                 xspan = np.asarray(xspan, dtype=np.float64)
             except ValueError:
-                print('Could not convert xspan into a numpy array.')
+                logger.error('Could not convert xspan into a numpy array.')
                 raise
 
         if not all(x<y for x, y in zip(xspan, xspan[1:])):
@@ -246,7 +250,7 @@ class Solver:
             try:
                 atol = np.asarray(atol, dtype=np.float64)
             except ValueError:
-                print('Could not convert atol into numpy array.')
+                logger.error('Could not convert atol into numpy array.')
                 raise
 
             if len(atol) != npde:
@@ -266,7 +270,7 @@ class Solver:
             try:
                 rtol = np.asarray(rtol, dtype=np.float64)
             except ValueError:
-                print('Could not convert rtol into numpy array.')
+                logger.error('Could not convert rtol into numpy array.')
                 raise
 
             if len(rtol) != npde:
@@ -297,7 +301,7 @@ class Solver:
             else:
                 is_tstop = True
                 if (self.t_int == 1):
-                    print("Note: when using Solver with t_int ='r', setting " \
+                    logger.info("Note: when using Solver with t_int ='r', setting " \
                         + "tstop has no effect.")
 
         # Initialize Bacoli95 solver object.

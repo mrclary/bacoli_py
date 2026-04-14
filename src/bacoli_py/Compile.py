@@ -1,7 +1,10 @@
+import logging
 from pathlib import Path
 import subprocess as sp
 import sys
 from tempfile import gettempdir
+
+logger = logging.getLogger(__name__)
 
 
 def f2py_compile(
@@ -69,6 +72,7 @@ def f2py_compile(
         if isinstance(extra_args, list):
             cmd.extend(extra_args)
 
+    logger.info("Command: %s", " ".join(cmd))
     proc = sp.run(cmd, capture_output=not verbose, check=True, text=True)
 
     return proc
