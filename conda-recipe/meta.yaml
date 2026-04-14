@@ -1,5 +1,4 @@
 {% set version = "1.0.5.dev0" %}
-{% set python_min = "3.10" %}
 {% set build = 0 %}
 
 package:
@@ -14,13 +13,13 @@ build:
 
 requirements:
   host:
-    - python =3.10
+    - python
     - numpy >=2
     - meson-python
     - gfortran
     - {{ compiler('fortran') }}
   run:
-    - python >={{ python_min }}
+    - python
     - numpy
     - libgfortran
 
