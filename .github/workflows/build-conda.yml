@@ -60,9 +60,8 @@ jobs:
 
           conda search -c local --override-channels || true
 
-          CONDA_PKG_PATH=$(ls $CONDA_BLD_PATH/**/bacoli*.conda)
+          CONDA_PKG_PATH=$(find $CONDA_BLD_PATH -name 'bacoli*.conda')
 
-          # Add these to GITHUB_ENV last because macOS renames the wheel
           echo "CONDA_PKG_PATH=$CONDA_PKG_PATH" >> $GITHUB_ENV
           echo "NAME=$(basename $CONDA_PKG_PATH)" >> $GITHUB_ENV
 
