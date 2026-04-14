@@ -2836,6 +2836,7 @@ C
       DATA MAXIT/4/
       DATA XRATE/0.25D0/
       DATA ERKM1/0.D0/
+      DATA TERKM1/1.D0/
 C
 C
 C

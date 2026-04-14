@@ -820,6 +820,7 @@ c                               coefficients when icount = 0 before
 c                               remeshing when using dassl_{kcol}.
 c
         integer                 irold
+        data                    irold/0/
 c                               irold is the value of ipar(ixold) before
 c                               remeshing.
 c
