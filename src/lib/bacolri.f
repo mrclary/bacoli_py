@@ -464,6 +464,7 @@ c                               coefficients when ipar(icount)=0 before
 c                               remeshing when using radau_{kcol+1}.
 c
         integer                 irold
+      data irold/1/
 c                               irold is the value of ipar(ixold) before
 c                               remeshing.
 c
@@ -857,14 +858,14 @@ c-----------------------------------------------------------------------
 c     Calculate the number of quadrature points used for error
 c     estimate and the extra storage requirements of errest.
 c     The SCI scheme needs slightly more storage here.
-      if (mflag(5) .eq. 0) then
-         necpts = (kcol + 2) * nint
-         lenerr = (2 * necpts + nint) * npde
-     &          + ((kcol - 3) * nint + (nint + 1) * 2) * npde
-         lencof = (kcol + 1) * (kcol + 2)
-     &          + (kcol + nconti) * (kcol - 3) * nint
-     &          + (kcol + nconti) * 2 * (nint + 1)
-      elseif (mflag(5) .eq. 1) then
+C     if (mflag(5) .eq. 0) then
+      necpts = (kcol + 2) * nint
+      lenerr = (2 * necpts + nint) * npde
+     &       + ((kcol - 3) * nint + (nint + 1) * 2) * npde
+      lencof = (kcol + 1) * (kcol + 2)
+     &       + (kcol + nconti) * (kcol - 3) * nint
+     &       + (kcol + nconti) * 2 * (nint + 1)
+      if (mflag(5) .eq. 1) then
          necpts = (kcol + 3) * nint
          lenerr = (2 * necpts + nint) * npde
      &          + ((kcol - 2) * nint + (nint + 1) * 2) * npde
@@ -1503,7 +1504,7 @@ C      &              work(iuxx), fr(mm), npde)
             do 181 k = 1, npde
                 work(swapiu+(k-1)*vnpts+voffset) = work(iu+(k-1))
                 work(swapiux+(k-1)*vnpts+voffset) = work(iux+(k-1))
-                work(swapiuxx+(k-1)*vnpts+voffset) 
+                work(swapiuxx+(k-1)*vnpts+voffset)
      &                  = work(iuxx+(k-1))
   181       continue
 
@@ -1591,10 +1592,10 @@ c                               neq=npde*ncpts is the number of bspline
 c                               coefficients (or DAEs).
         integer                 ifgfdj
 c                               Are finite difference approximations
-c                               being used to approximate Jacobian 
-c                               matrices? Set to 0 to approximate 
+c                               being used to approximate Jacobian
+c                               matrices? Set to 0 to approximate
 c                               derivf, difbxa and difbxb.
-c                               Set to 1 to approxiate only difbxa and 
+c                               Set to 1 to approxiate only difbxa and
 c                               difbxb.
 c                               Set to 2 to approximate only derivf.
 c                               Set to 3 if all of derivf, difbxa and
@@ -1763,7 +1764,7 @@ c BLAS Subroutines Called:
 c                               dcopy
 c
 c-----------------------------------------------------------------------
- 
+
 c     Set pointers into the temporary floating point work array.
       iu     = 1
       iux    = iu     + npde
@@ -2455,9 +2456,9 @@ c                               lowint
 c
 c-----------------------------------------------------------------------
 c     quad is the number of quadrature points used per subinterval
-      if (est .eq. 0) then
-         quad = kcol + 2
-      elseif (est .eq. 1) then
+C     if (est .eq. 0) then
+      quad = kcol + 2
+      if (est .eq. 1) then
          quad = kcol + 3
       endif
 
@@ -2470,14 +2471,14 @@ c     Also, the SCI uses a greater number of quadrature points.
       iusol2 = iusol1 + npde * nint * quad
       ierrci = iusol2 + npde * nint * quad
       iliu   = ierrci + npde * nint
-      if (est .eq. 0) then
-         ilium  = iliu   + npde * nint * (kcol - 3)
-         ih     = 1
-         ihd    = ih     + 2 * quad
-         ig     = ihd    + 2 * quad
-         ibassc = ig     + (kcol - 3) * quad
-         ibasm  = ibassc + (kcol + nconti) * (kcol - 3) * nint
-      elseif (est .eq. 1) then
+C     if (est .eq. 0) then
+      ilium  = iliu   + npde * nint * (kcol - 3)
+      ih     = 1
+      ihd    = ih     + 2 * quad
+      ig     = ihd    + 2 * quad
+      ibassc = ig     + (kcol - 3) * quad
+      ibasm  = ibassc + (kcol + nconti) * (kcol - 3) * nint
+      if (est .eq. 1) then
          ilium  = iliu   + npde * nint * (kcol - 2)
          ih     = 1
          ihd    = ih     + 2 * quad * nint
@@ -2596,7 +2597,8 @@ c     Calculate errint and errcom.
 
 c     When using the LOI scheme, error is actually estimated for a
 c     solution that is one order lower than that which is computed.
-      if (est .eq. 0) power = one/dble(kcol+1)
+C     if (est .eq. 0)
+      power = one/dble(kcol+1)
       if (est .eq. 1) power = one/dble(kcol+2)
 
 c     Take the square root and update errint and errcom.
@@ -2988,12 +2990,12 @@ c                                     +2*neq+2*npde+2*npde*npde
 c                               Are finite difference approximations
 c                               being used to approximate Jacobian
 c                               matrices?
-c                               Set to 0 to approximate derivf, difbxa 
+c                               Set to 0 to approximate derivf, difbxa
 c                               and difbxb.
-c                               Set to 1 to approxiate only difbxa and 
+c                               Set to 1 to approxiate only difbxa and
 c                               difbxb.
 c                               Set to 2 to approximate only derivf.
-c                               Set to 3 if all of derivf, difbxa and 
+c                               Set to 3 if all of derivf, difbxa and
 c                               difbxb are provided.
 c
 C     BACOLRI --> BACOLRIVEC
@@ -3159,6 +3161,9 @@ c                               dcopy
 c                               dscal
 c
 c-----------------------------------------------------------------------
+c Avoid -Wunused-dummy-argument
+      if (.false.) call uinitvec
+
       nels = npde*npde*kcol*(kcol+nconti)
 
 c     Set the pointers into the floating point work array.
@@ -3606,6 +3611,8 @@ c Subroutines Called:
 c                               calfcn
 c
 c-----------------------------------------------------------------------
+c Avoid -Wunused-dummy-argument
+      if (.false.) call derivf
 
       npde   = ipar(inpde)
       kcol   = ipar(ikcol)
@@ -5675,7 +5682,7 @@ c     Other precomputed factors.
 c
 c-----------------------------------------------------------------------
 c Loop indices
-      integer                 i, j, k
+      integer                 i, j
 c
 c-----------------------------------------------------------------------
 
@@ -6960,9 +6967,9 @@ c-----------------------------------------------------------------------
       subroutine fdderivf(t, x, u, ux, uxx, dfdu, dfdux, dfduxx, npde,
      &                    f, work)
 c-----------------------------------------------------------------------
-c         This subroutine produces central differences approximations 
-c         for this first and second partial derivitives of the the PDE 
-c         system f using in BACOLI models, ut = f(t, x, u, ux, uxx). 
+c         This subroutine produces central differences approximations
+c         for this first and second partial derivitives of the the PDE
+c         system f using in BACOLI models, ut = f(t, x, u, ux, uxx).
 c         This subroutine is called by CALJAC in place of the user
 c         provided routine DERIVF.
 c-----------------------------------------------------------------------
@@ -7037,7 +7044,7 @@ c         d1 and d2 are what is *actually* added or subtracted
    25     continue
    20 continue
 
-c     last, dfduxx 
+c     last, dfduxx
       do 30 j = 1, npde
           oldval = uxx(j)
           del = squr * max(abs(uxx(j)), uround)
@@ -7093,7 +7100,7 @@ c-----------------------------------------------------------------------
 
 c     We apply increments on the order of size sqrt uround
 
-c     uround is the largest relative spacing on this machine, this is 
+c     uround is the largest relative spacing on this machine, this is
 c     the smallest double precision floating point number possible on
 c     this machine.
       uround = d1mach(4)
@@ -7168,7 +7175,6 @@ c     Parameters:
 c     ----------------------------------------------------------------
 c     Work offsets
 c     ------------
-      integer    xioff
 c     Offset for uniform mesh partitioning spatial domain used in this
 c     equidistribution algorithm.
       integer    moff
@@ -7211,6 +7217,12 @@ c     Locals
       double precision d1mach
       external         d1mach
 
+c Avoid -Wunused-dummy-argument
+      if (.false.) then
+         xa = 0
+         xb = 0
+      endif
+
       ierr = 0
 
 C     Validate input
@@ -7248,7 +7260,7 @@ c     Compute the arc-length monitor function
       h1 = xi(2) - xi(1)
       h2 = xi(3) - xi(2)
       do j = 1, npde
-          wm(moff) = wm(moff) 
+          wm(moff) = wm(moff)
      &        + ((-(2.0d0*h1+h2))/(h1*(h1+h2))*wm(uaoff+(j-1))
      &        + (h1+h2)/(h1*h2)*wm(umoff+(j-1))
      &        - (h1)/((h1+h2)*h2)*wm(uboff+(j-1)))**2
@@ -7300,12 +7312,12 @@ c     function using deBoor's equidistribution algorithm.
      &      *(wm(moff+(i-1))+wm(moff+(i-2)))
       end do
       sigma = 0.5d0*sigma
-      
+
       x(1) = xi(1)
       x(nint+1) = xi(nint+1)
       k = 2
       temp1 = 0.0d0
-      
+
       do i = 2, nint
           sigmai = xi(i)*sigma
 

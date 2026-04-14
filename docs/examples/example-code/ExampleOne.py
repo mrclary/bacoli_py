@@ -28,7 +28,7 @@ d4 = 0.01
 # Function defining the PDE system.
 # N = Total population at time t.
 #
-# S = fval[0] = Number of individuals in host population susceptible to 
+# S = fval[0] = Number of individuals in host population susceptible to
 #     influenza
 #
 # E = fval[1] = Number of individuals who have been exposed to influenza and
@@ -38,7 +38,7 @@ d4 = 0.01
 #
 # R = fval[3] = Number of individuals who have recovered from the disease.
 def f(t, x, u, ux, uxx, fval):
-    N = u[0] + u[1] + u[2] + u[3] 
+    N = u[0] + u[1] + u[2] + u[3]
     fval[0] = -be*u[0]*(u[1] + u[2])/N - mu*u[0] + r*N*(1 - N/ka) + d1*uxx[0]
     fval[1] = be*u[0]*(u[1] + u[2])/N - (mu + sig + kb)*u[1] + d2*uxx[1]
     fval[2] = sig*u[1] - (mu + alph + gam)*u[2] + d3*uxx[2]
@@ -79,15 +79,15 @@ def uinit(x, u):
 npde = 4
 
 # Initialize ProblemDefinition object.
-problem_definition = bacoli_py.ProblemDefinition(npde, f=f, 
-                                            bndxa=bndxa, 
+problem_definition = bacoli_py.ProblemDefinition(npde, f=f,
+                                            bndxa=bndxa,
                                             bndxb=bndxb,
                                             uinit=uinit)
 
 # Set t0.
 initial_time = 0.0
 
-# Make initial spatial mesh of 10 uniformly spaced partitions of the spatial 
+# Make initial spatial mesh of 10 uniformly spaced partitions of the spatial
 # domain, with a left boundary of -2 and right boundary of 2.
 initial_mesh = numpy.linspace(-2, 2, 11)
 
@@ -101,7 +101,7 @@ xspan = numpy.linspace(-2,2,100)
 evaluation = solver.solve(problem_definition, initial_time, initial_mesh,
                                   tspan, xspan)
 
-# Use matplotlib.pyplot to plot the distribution of the susceptible population 
+# Use matplotlib.pyplot to plot the distribution of the susceptible population
 # at each time.
 import matplotlib
 matplotlib.use('agg')

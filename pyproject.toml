@@ -1,0 +1,30 @@
+[build-system]
+requires = [
+    "meson-python>=0.15",
+    "numpy>=2",
+    # gfortran is not available from PyPi. Create a conda environment with this
+    # package to build bacoli_interface module
+    # "gfortran",
+]
+build-backend = "mesonpy"
+
+[project]
+name = "bacoli_py"
+version = "1.0.5.dev0"
+
+description = "Python package for the error controlled numerical solution to 1D time-dependent PDEs"
+readme = { file = "README.txt", content-type = "text/plain" }
+requires-python = ">=3.10"
+authors = [
+    {name = "Connor Tannahill and Paul Muir", email = "ctannahill3@gmail.com"},
+]
+license = "MIT"
+license-files = [
+    'LICENSE.txt',
+    'BACOLI-LICENSE.txt',
+    'BACOLRI-LICENSE.txt',
+]
+
+dependencies = [
+    "numpy",
+]

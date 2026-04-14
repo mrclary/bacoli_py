@@ -41,6 +41,7 @@
 ! .. Intrinsic Functions ..
       INTRINSIC epsilon, huge, kind, log10, tiny
 ! ..
+      d1mach = tiny(zero)
       SELECT CASE (i)
       CASE (1)
         d1mach = tiny(zero)
@@ -128,44 +129,45 @@
 ! .. Intrinsic Functions ..
       INTRINSIC digits, huge, maxexponent, minexponent, radix
 ! ..
+      i1mach = 5
       SELECT CASE (i)
       CASE (1)
-! Standard input                                   
+! Standard input
         i1mach = 5
       CASE (2)
-! Standard output                                  
+! Standard output
         i1mach = 6
       CASE (3)
-! Standard punch :-)                               
+! Standard punch :-)
         i1mach = 6
       CASE (4)
-! Standard error                                   
+! Standard error
         i1mach = 6
       CASE (5)
 !  Number of bits /integer (+1 for the s
         i1mach = digits(i) + 1
       CASE (6)
-! Number of characters / integer :-)               
+! Number of characters / integer :-)
         i1mach = 4
       CASE (7)
-        i1mach = radix(i) ! base of integers                           
+        i1mach = radix(i) ! base of integers
       CASE (8)
-        i1mach = digits(i) ! number of base radix digits in integer    
+        i1mach = digits(i) ! number of base radix digits in integer
       CASE (9)
-        i1mach = huge(i) ! Maximum integer                             
+        i1mach = huge(i) ! Maximum integer
       CASE (10)
-        i1mach = radix(r) ! base of floating point                     
+        i1mach = radix(r) ! base of floating point
       CASE (11)
-        i1mach = digits(r) ! number of base radix digits in sp         
+        i1mach = digits(r) ! number of base radix digits in sp
       CASE (12)
-        i1mach = minexponent(r) ! minimun sp exponent                  
+        i1mach = minexponent(r) ! minimun sp exponent
       CASE (13)
-        i1mach = maxexponent(r) ! maximum sp exponent                  
+        i1mach = maxexponent(r) ! maximum sp exponent
       CASE (14)
-        i1mach = digits(d) ! number of base radix digits in dp         
+        i1mach = digits(d) ! number of base radix digits in dp
       CASE (15)
-        i1mach = minexponent(d) ! minimun dp exponent                  
+        i1mach = minexponent(d) ! minimun dp exponent
       CASE (16)
-        i1mach = maxexponent(d) ! maximum dp exponent                  
+        i1mach = maxexponent(d) ! maximum dp exponent
       END SELECT
     END FUNCTION i1mach

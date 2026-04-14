@@ -1,8 +1,8 @@
 # Solving the Reaction-Convection-Diffusion (RCD) system. This
-# problem is also called the Catalytic Surface Reaction Model 
+# problem is also called the Catalytic Surface Reaction Model
 # (CSRM). It consists of four PDE's.
 # ------------------------------------------------------------------
-# This example is based off a FORTRAN analogue for the original 
+# This example is based off a FORTRAN analogue for the original
 # BACOLI. The original can be found at:
 #   http://cs.stmarys.ca/~muir/BACOLI95-3_Source/3-Problems/RCDsys.f
 # ------------------------------------------------------------------
@@ -59,11 +59,11 @@ def uinit(x, u):
     u[1] = c
     u[2] = 0.0
     u[3] = 0.0
-    return u 
+    return u
 
 # Instantiate problem definition object.
-problem_definition = bacoli_py.ProblemDefinition(npde, f=f, 
-                                            bndxa=bndxa, 
+problem_definition = bacoli_py.ProblemDefinition(npde, f=f,
+                                            bndxa=bndxa,
                                             bndxb=bndxb,
                                             uinit=uinit)
 
