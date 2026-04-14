@@ -10,6 +10,7 @@ source:
 
 build:
   number: {{ build }}
+  string: {{ target_platform | replace('-', '_') }}_py{{ python | replace('.', '') }}h{{ PKG_HASH }}_{{ build }}
 
 requirements:
   host:
