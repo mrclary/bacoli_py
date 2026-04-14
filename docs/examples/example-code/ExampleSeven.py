@@ -21,11 +21,10 @@ Part 1
 
 Creating and linking the Fortran callback functions
 """
-import numpy.f2py as f2py
-import sys
+from bacoli_py.Compile import f2py_compile
 
-prob_def_f = """
-     subroutine f(t, x, u, ux, uxx, fval)
+prob_def_f = """\
+      subroutine f(t, x, u, ux, uxx, fval)
          integer          npde
          parameter       (npde=1)
          double precision t, x, u(npde), ux(npde)
@@ -35,10 +34,10 @@ prob_def_f = """
          parameter       (eps=1d-4)
 
          fval(1) = eps*uxx(1) - u(1)*ux(1)
-     return
-     end
+      return
+      end
 
-     subroutine bndxa(t, u, ux, bval)
+      subroutine bndxa(t, u, ux, bval)
          integer          npde
          parameter        (npde=1)
          double precision t, u(npde), ux(npde), bval(npde)
@@ -58,11 +57,11 @@ prob_def_f = """
          if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
 
          bval(1) = u(1) - (0.1d0*expa1+0.5d0*expa2+expa3)
-    &                / (expa1+expa2+expa3)
-     return
-     end
+     &                / (expa1+expa2+expa3)
+      return
+      end
 
-     subroutine bndxb(t, u, ux, bval)
+      subroutine bndxb(t, u, ux, bval)
          integer          npde
          parameter       (npde=1)
          double precision t, u(npde), ux(npde), bval(npde)
@@ -82,11 +81,11 @@ prob_def_f = """
          if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
 
          bval(1) = u(1) - (0.1d0*expa1+0.5d0*expa2+expa3)
-    &                / (expa1+expa2+expa3)
-     return
-     end
+     &                / (expa1+expa2+expa3)
+      return
+      end
 
-     subroutine uinit(x, u)
+      subroutine uinit(x, u)
          integer          npde
          parameter        (npde=1)
          double precision x, u(npde)
@@ -106,11 +105,11 @@ prob_def_f = """
          if ((a3-temp) .ge. -35.d0) expa3 = exp(a3-temp)
 
          u(1) = (0.1d0*expa1+0.5d0*expa2+expa3) / (expa1+expa2+expa3)
-     return
-     end
+      return
+      end
 """
 
-f2py.compile(prob_def_f.encode('ascii'), modulename='problemdef', verbose=0)
+f2py_compile(prob_def_f, modulename='problemdef', verbose=0)
 
 """
 Part 2
@@ -120,7 +119,6 @@ Using the compiled callback routines to solve the problem.
 
 import bacoli_py
 import numpy
-import time
 from problemdef import f, bndxa, bndxb, uinit
 
 # Initialize the Solver object.
@@ -156,7 +154,6 @@ evaluation = solver.solve(problem_definition, initial_time, initial_mesh,
 import matplotlib as mpl
 mpl.use('AGG')
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
 styling = {

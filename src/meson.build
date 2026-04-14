@@ -40,9 +40,10 @@ bacoli_mod = custom_target(
 python.install_sources(
     [
         'bacoli_py/__init__.py',
+        'bacoli_py/Compile.py',
         'bacoli_py/Evaluation.py',
         'bacoli_py/ProblemDefinition.py',
-        'bacoli_py/Solver.py'
+        'bacoli_py/Solver.py',
     ],
     subdir: 'bacoli_py',
 )
