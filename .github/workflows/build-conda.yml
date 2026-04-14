@@ -1,9 +1,6 @@
 name: Build conda package
 
 on:
-  push:
-    branches:
-    - new-master
   pull_request:
     branches:
     - new-master
