@@ -10,7 +10,7 @@ build-backend = "mesonpy"
 
 [project]
 name = "bacoli_py"
-version = "1.0.5.dev0"
+version = "2.0.0"
 
 description = "Python package for the error controlled numerical solution to 1D time-dependent PDEs"
 readme = { file = "README.txt", content-type = "text/plain" }
