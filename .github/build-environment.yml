@@ -2,8 +2,9 @@ name: build
 channels:
   - conda-forge
 dependencies:
-  - conda-build
-  - gfortran
-  - meson-python
-  - numpy >=2
+  - anaconda-client  # uploading to Anaconda
+  - conda-build      # building the conda package
+  - gfortran         # compiling the fortran code
+  - meson-python     # build backend
+  - numpy >=2        # f2py, meson backend
   - python

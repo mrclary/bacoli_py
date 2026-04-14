@@ -73,6 +73,12 @@ jobs:
           path: ${{ env.CONDA_PKG_PATH }}
           name: ${{ env.NAME }}
 
+      - name: Upload to Anaconda
+        if: github.event_name == 'release'
+        env:
+          ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+        run: anaconda -t $ANACONDA_TOKEN upload $CONDA_PKG_PATH
+
       - name: Get Release
         if: github.event_name == 'release'
         id: get_release
