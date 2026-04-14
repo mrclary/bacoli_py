@@ -51,12 +51,3 @@ python.install_sources(
     ],
     subdir: 'bacoli_py'
 )
-
-# Install data files (licenses)
-install_data(
-    '../LICENSE.txt',
-    'lib/BACOLI-LICENSE.txt',
-    'lib/BACOLRI-LICENSE.txt',
-    install_dir: pkg_dir,
-    install_tag: 'license'
-)

@@ -9,17 +9,20 @@ build-backend = "mesonpy"
 [project]
 name = "bacoli_py"
 version = "1.0.5.dev0"
+
 description = "Python package for the error controlled numerical solution to 1D time-dependent PDEs"
 readme = { file = "README.txt", content-type = "text/plain" }
 requires-python = ">=3.10"
 authors = [
     {name = "Connor Tannahill and Paul Muir", email = "ctannahill3@gmail.com"},
 ]
+license = "MIT"
 license-files = [
-    "LICENSE.txt",
-    "src/lib/BACOLI-LICENSE.txt",
-    "src/lib/BACOLRI-LICENSE.txt",
+    'LICENSE.txt',
+    'BACOLI-LICENSE.txt',
+    'BACOLRI-LICENSE.txt',
 ]
+
 dependencies = [
     "numpy",
 ]

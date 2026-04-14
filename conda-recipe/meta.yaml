@@ -34,4 +34,3 @@ about:
     bacoli_py is a Python package for solving systems of 1D Parabolic
     Partial Differential Equations.
   summary: "Python wrapper for BACOLI Fortran solver"
-  license: "BSD"
